@@ -56,22 +56,20 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(R.id.my_button).setOnClickListener {
                 Intent(MediaStore.ACTION_IMAGE_CAPTURE).also {
                     takePictureIntent ->
-                    takePictureIntent.resolveActivity(packageManager)?.also {
-                        val photoFile: File? = try {
-                            createImageFile()
-                        } catch (ex: IOException) {
-                            ex.message?.let { it1 -> Log.e("MY_TAG", it1) }
-                            null
-                        }
-                        photoFile?.also {
-                            val photoURI: Uri = FileProvider.getUriForFile(
-                                this,
-                                "com.example.android.fileprovider",
-                                it
-                            )
-                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                            startForResult.launch(takePictureIntent)
-                        }
+                    val photoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        ex.message?.let { it1 -> Log.e("MY_TAG", it1) }
+                        null
+                    }
+                    photoFile?.also {
+                        val photoURI: Uri = FileProvider.getUriForFile(
+                            this,
+                            "com.example.android.fileprovider",
+                            it
+                        )
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startForResult.launch(takePictureIntent)
                     }
                 }
             }
